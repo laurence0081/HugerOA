@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huger.dao.ICheckinsDao" >
+  <resultMap id="CheckinsResultMap" type="com.huger.pojo.Checkins" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="userId" property="userId" jdbcType="INTEGER" />
+    <result column="realname" property="realname" jdbcType="VARCHAR" />
+    <result column="imgURL" property="imgURL" jdbcType="VARCHAR" />
+    <result column="imgURLEX" property="imgURLEX" jdbcType="VARCHAR" />
+    <result column="signTime" property="signTime" jdbcType="VARCHAR" />
+    <result column="cellphone" property="cellphone" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="location" property="location" jdbcType="VARCHAR" />
+    <result column="longitude" property="longitude" jdbcType="INTEGER" />
+    <result column="latitude" property="latitude" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="department" property="department" jdbcType="INTEGER" />
+    <result column="projectId" property="projectId" jdbcType="INTEGER" />
+    <result column="projectName" property="projectName" jdbcType="VARCHAR" />
+    <result column="customerId" property="customerId" jdbcType="INTEGER" />
+    <result column="customerName" property="customerName" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Checkins_Column_List" >
+    id, userId, realname, signTime, imgURL, cellphone, description, imgURLEX, 
+    location, longitude, latitude, type, department, projectId, projectName, 
+    customerId, customerName
+  </sql>
+  
+  <insert id="insert" parameterType="com.huger.pojo.Checkins" useGeneratedKeys="true" keyProperty="id">  
+  <selectKey resultType="int" keyProperty="id">
+    SELECT LAST_INSERT_ID()
+  </selectKey>
+    insert into checkins (userId, realname, signTime, imgURL, cellphone, description, imgURLEX, location, longitude, latitude)
+    values (#{userId,jdbcType=INTEGER}, #{realname,jdbcType=VARCHAR}, #{signTime,jdbcType=VARCHAR},
+    #{imgURL,jdbcType=VARCHAR}, #{cellphone,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+    #{imgURLEX,jdbcType=VARCHAR}, #{location,jdbcType=INTEGER}, #{longitude,jdbcType=INTEGER}, 
+    #{latitude,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{department,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, 
+    #{projectName,jdbcType=INTEGER}, #{customerId,jdbcType=INTEGER}, #{customerName,jdbcType=INTEGER})
+  </insert>
+  
+  <delete id="deleteById" parameterType="java.lang.Integer" >
+    delete from checkins
+    where id = #{id}
+  </delete>
+  
+  <update id="update" parameterType="com.huger.pojo.Checkins" >
+    update checkins
+    set userId = #{userId},
+      realname = #{realname},
+      signTime = #{signTime},
+      imgURL = #{imgURL},
+      cellphone = #{cellphone},
+      description = #{description},
+      imgURLEX = #{imgURLEX},
+      location = #{location},
+      longitude = #{longitude},
+      latitude = #{latitude},
+      type = #{type},
+      department = #{department},
+      projectId = #{projectId},
+      projectName = #{projectName},
+      customerId = #{customerId},
+      customerName = #{customerName}
+    where id = #{id}
+  </update>
+  
+  <update id="updateImg" >
+    update checkins
+    set imgURLEX = #{1}
+    where id = #{0}
+  </update>
+  
+  <select id="selectById" resultMap="CheckinsResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Checkins_Column_List" />
+    from checkins
+    where id = #{id}
+  </select>
+    
+  <select id="selectByType" resultMap="CheckinsResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Checkins_Column_List" />
+    from checkins
+    where type = #{type}
+  </select>
+  
+   <select id="selectByDepartment" resultMap="CheckinsResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Checkins_Column_List" />
+    from checkins
+    where type = #{type}
+  </select>
+  
+  <select id="selectByUserId" resultMap="CheckinsResultMap" >
+    select 
+    <include refid="Checkins_Column_List" />
+    from checkins
+    where userId = #{userId}
+  </select>
+</mapper>
